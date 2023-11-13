@@ -16,7 +16,7 @@ public:
 
     void clear_hint(uint8_t val);
 
-    std::vector<uint8_t> get_hints() const;
+    std::vector<uint8_t> get_hints();
 };
 
 #endif

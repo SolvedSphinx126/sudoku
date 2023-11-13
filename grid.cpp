@@ -1,7 +1,11 @@
 #include "grid.h"
 
 Grid::Grid() {
-
+    for (Cell cell : vals) {
+        for (uint8_t i = 1; i <= 9; i++) {
+            cell.set_hint(i);
+        }
+    }
 }
 
 Cell* Grid::get(uint8_t x, uint8_t y)
@@ -11,20 +15,21 @@ Cell* Grid::get(uint8_t x, uint8_t y)
 
 void Grid::set_value(uint8_t x, uint8_t y, uint8_t val)
 {
-    vals[(x - 1) * 9 + (y - 1)].value = val;
+    Cell *cell = this->get(x, y);
+    this->set_value(cell, val);
 }
 
 void Grid::set_value(Cell *cell, uint8_t val)
 {
     cell->value = val;
     for (Cell *affected : this->get_col(cell)) {
-        affected->value = 7;
+        affected->clear_hint(val);
     }
     for (Cell *affected : this->get_row(cell)) {
-        affected->value = 7;
+        affected->clear_hint(val);
     }
     for (Cell *affected : this->get_box(cell)) {
-        affected->value = 7;
+        affected->clear_hint(val);
     }
 }
 
