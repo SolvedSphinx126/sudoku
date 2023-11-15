@@ -22,6 +22,7 @@ void Grid::set_value(uint8_t x, uint8_t y, uint8_t val)
 void Grid::set_value(Cell *cell, uint8_t val)
 {
     cell->value = val;
+    cell->hints = 0;
     for (Cell *affected : this->get_col(cell)) {
         affected->clear_hint(val);
     }
