@@ -3,7 +3,8 @@
 
 int main() {
     Grid puzzle;
-    puzzle.set_value(3, 7, 6);
+    puzzle.get(3,4)->hints = 16;
+    puzzle.solveLoneSingles();
     puzzle.print_grid();
     return 0;
 }

@@ -1,16 +1,29 @@
 #include "grid.h"
 
 Grid::Grid() {
-    for (Cell cell : vals) {
-        for (uint8_t i = 1; i <= 9; i++) {
-            cell.set_hint(i);
-        }
+    for (Cell &cell : vals) {
+        cell.hints = 0x01ff;
     }
 }
 
 Cell* Grid::get(uint8_t x, uint8_t y)
 {
     return &vals[(x - 1) * 9 + (y - 1)];
+}
+
+void Grid::solveLoneSingles() {
+    bool setAny = true;
+    while (setAny) {
+        setAny = false;
+        for (Cell &cell : this->vals) {
+            // BIT HACKING
+            // If there is only 1 hint set
+            if (((cell.hints & (cell.hints - 1)) == 0) && (cell.hints != 0)) {
+                setAny = true;
+                this->set_value(&cell, cell.get_hints()[0]);
+            }
+        }
+    }
 }
 
 void Grid::set_value(uint8_t x, uint8_t y, uint8_t val)
