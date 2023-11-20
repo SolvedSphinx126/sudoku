@@ -26,6 +26,35 @@ void Grid::solveLoneSingles() {
     }
 }
 
+void Grid::solveHiddenSingles() {
+    bool setAny = true;
+    std::vector<std::vector<Cell*>> groups;
+    while (setAny) {
+        setAny = false;
+        for (Cell &cell : this->vals) {
+            groups.clear();
+            // skip solved cells
+            if (cell.hints != 0) {
+                groups.push_back(this->get_box(&cell));
+                groups.push_back(this->get_row(&cell));
+                groups.push_back(this->get_col(&cell));
+                for (std::vector<Cell*> &group : groups) {
+                    uint16_t hintsInRestOfCells = 0;
+                    for (Cell* otherCell : group) {
+                        hintsInRestOfCells |= otherCell->hints;
+                    }
+                    // truthy if cell has a hidden single of val
+                    if (uint16_t val = (~hintsInRestOfCells & cell.hints)) {
+                        cell.hints = val;
+                        this->set_value(&cell, cell.get_hints()[0]);
+                        setAny = true;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void Grid::set_value(uint8_t x, uint8_t y, uint8_t val)
 {
     Cell *cell = this->get(x, y);
@@ -123,4 +152,5 @@ void Grid::print_grid() {
             std::cout << "---------+---------+---------" << std::endl;
         }
     }
+    std::cout << std::endl;
 }

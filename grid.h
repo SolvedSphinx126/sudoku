@@ -16,6 +16,8 @@ public:
 
     void solveLoneSingles();
 
+    void solveHiddenSingles();
+
     void set_value(uint8_t x, uint8_t y, uint8_t val);
 
     void set_value(Cell* cell, uint8_t val);
